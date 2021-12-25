@@ -9,4 +9,10 @@ router.post(
   modalController.add
 );
 
+router.get(
+  "/get",
+  // modalController.uploadImage.single("images"),
+  modalController.get
+);
+
 module.exports = router;

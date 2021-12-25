@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const URL =
-  "mongodb+srv://bhushan:PakistanAllah786@cluster0.y86tf.mongodb.net/test";
+const URL = process.env.MONGO_URI;
 
 module.exports = {
   db: async () => {

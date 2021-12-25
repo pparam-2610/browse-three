@@ -24,7 +24,7 @@ const s3 = new AWS.S3({
   region: "ap-south-1",
   // signatureVersion: "v4",
 });
-console.log(s3);
+// console.log(s3);
 const uploadFile = async (fileName, name) => {
   return new Promise((resolve, reject) => {
     // Read content from the file

@@ -9,15 +9,6 @@ const CustomError = require("./bin/custom/error");
 const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
 
-// db.authenticate()
-//   .then(async () => {
-//     await db.sync();
-//     console.log("Database is connected...");
-//   })
-//   .catch((err) => {
-//     console.log(`Database Error :${err}`);
-//   });
-
 connection.db();
 
 //******* Associations ******\\

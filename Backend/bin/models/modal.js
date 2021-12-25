@@ -15,4 +15,19 @@ const modalSchema = new mongoose.Schema({
   //   },
 });
 
+// modalSchema.pre('find',(next)=>{
+//   this.
+// })
+
+modalSchema.post("find", function (result) {
+  console.log(this instanceof mongoose.Query); // true
+  // prints returned documents
+  console.log("find() returned " + JSON.stringify(result));
+  for (let i = 0; i < result.length; i++) {
+    result[i]["link"] = `${process.env.S3_URI}${result[i]["link"]}`;
+  }
+  // prints number of milliseconds the query took
+  // console.log("find() took " + (Date.now() - this.start) + " millis");
+});
+
 module.exports = mongoose.model("modal", modalSchema);

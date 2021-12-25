@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const uniqid = require("uniqid");
 const multer = require("multer");
+const Modal = require("../models/modal");
 // const { Op } = require('sequelize');
 
 // const Images = require('../models/images');
@@ -35,7 +36,8 @@ const multerFilter = (req, file, cb) => {
     ext == ".PNG" ||
     ext == ".IMG" ||
     ext == ".JPG" ||
-    ext == ".JPEG"
+    ext == ".JPEG" ||
+    ext == ".glb"
   ) {
     cb(null, true);
   } else {
@@ -50,62 +52,50 @@ exports.uploadImage = multer({
 const { getSignedURL, uploadFile, deleteFile } = require("../custom/s3");
 
 exports.add = async (req, res) => {
-  console.log("The data is: ", req.body, req.file);
+  console.log("The data is: ", req.body.name, req.file);
+  const name = req.body.name;
 
   key = await uploadFile(path.join(req.file.path), req.file.originalname);
+  fs.unlinkSync(path.join(req.file.path));
   console.log("The key is: ", key);
-  return res.json({ data: "hi", key: key.Key });
-  // try {
-  //   if (!req.files)
-  //     throw customError.dataInvalid;
-  //   // let blog = await Blog.findByPk(req.body.id);
 
-  //   await Promise.all(req.files.map(async (file, i) => {
-  //     console.log("Images is: ",i)
-  //     key = await uploadFile(path.join(file.path), file.originalname);
-  //     await Images.create({
-  //       // type: req.body.type,
-  //       // sequence: req.body.sequence,
-  //       key: key.Key,
-  //       // blog_id: blog.id,
-  //     });
-  //     fs.unlinkSync(path.join(file.path));
-  //   }));
-  //   return res.status(200).json({
-  //     error: false,
-  //     details: {
-  //       message: 'Data Uploaded Successfully',
-  //       // data: blog,
-  //     },
-  //   });
-  // } catch (error) {
-  //   console.log(`***** ERROR : ${req.originalUrl} ${error}`);
-  //   return res.status(error.code || 500).json({
-  //     error: true,
-  //     details: error,
-  //   });
-  // }
+  try {
+    const newModal = new Modal({ name: name, link: key.Key });
+    await newModal.save();
+    return res.json({
+      data: {
+        modal: newModal,
+      },
+      error: false,
+    });
+  } catch (e) {
+    console.log(`***** ERROR : ${req.originalUrl} ${e}`);
+    return res.json({
+      data: "Upload Unsuccessful",
+      error: true,
+    });
+  }
 };
 
-//   exports.getImages = async (req, res) => {
-//     try {
-//       // if (!req.body.id) throw customError.dataInvalid;
-//       let images = await Images.findAll();
-//       return res.status(200).json({
-//         error: false,
-//         details: {
-//           message: 'Data Found Successfully',
-//           data: images,
-//         },
-//       });
-//     } catch (error) {
-//       console.log(`***** ERROR : ${req.originalUrl} ${error}`);
-//       return res.status(error.code || 500).json({
-//         error: true,
-//         details: error,
-//       });
-//     }
-//   };
+exports.get = async (req, res) => {
+  try {
+    // if (!req.body.id) throw customError.dataInvalid;
+    let modals = await Modal.find({});
+    return res.status(200).json({
+      error: false,
+      details: {
+        message: "Data Found Successfully",
+        data: modals,
+      },
+    });
+  } catch (error) {
+    console.log(`***** ERROR : ${req.originalUrl} ${error}`);
+    return res.status(error.code || 500).json({
+      error: true,
+      details: error,
+    });
+  }
+};
 
 // //   exports.updateImages = async (req, res) => {
 // //     try {
