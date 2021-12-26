@@ -2,28 +2,32 @@ import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Main from "./pages/main";
+import { Navbar } from "./components/navbar";
+import React, { useState, useRef, useEffect, Suspense } from "react";
+import eventServices from "./services/eventServices";
+import Preview from "./pages/preview";
 
 function App() {
+  const [modal, setModal] = useState(null);
+  const [modalName, setModalName] = useState(null);
+
+  useEffect(async () => {
+    const modalData = await eventServices.getModal();
+    setModal(modalData.data);
+    setModalName(modalData.data.map((item) => item.name));
+  }, []);
+
   return (
     <div className="App">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
       <Router>
         <Switch>
           <Route exact path="/">
+            <Navbar modalName={modalName} />
             <Main />
+          </Route>
+          <Route exact path="/preview/:name">
+            <Navbar modalName={modalName} />
+            <Preview />
           </Route>
         </Switch>
       </Router>

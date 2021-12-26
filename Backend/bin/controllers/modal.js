@@ -55,32 +55,79 @@ exports.add = async (req, res) => {
   console.log("The data is: ", req.body.name, req.file);
   const name = req.body.name;
 
-  key = await uploadFile(path.join(req.file.path), req.file.originalname);
-  fs.unlinkSync(path.join(req.file.path));
-  console.log("The key is: ", key);
+  // key = await uploadFile(path.join(req.file.path), req.file.originalname);
+  // fs.unlinkSync(path.join(req.file.path));
+  // console.log("The key is: ", key);
 
-  try {
-    const newModal = new Modal({ name: name, link: key.Key });
-    await newModal.save();
-    return res.json({
-      data: {
-        modal: newModal,
-      },
-      error: false,
-    });
-  } catch (e) {
-    console.log(`***** ERROR : ${req.originalUrl} ${e}`);
-    return res.json({
-      data: "Upload Unsuccessful",
-      error: true,
-    });
-  }
+  // try {
+  //   const newModal = new Modal({ name: name, link: key.Key });
+  //   await newModal.save();
+  //   return res.json({
+  //     data: {
+  //       modal: newModal,
+  //     },
+  //     error: false,
+  //   });
+  // } catch (e) {
+  //   console.log(`***** ERROR : ${req.originalUrl} ${e}`);
+  //   return res.json({
+  //     data: "Upload Unsuccessful",
+  //     error: true,
+  //   });
+  // }
+
+  return res.json({
+    details: {
+      modal: "New Modal",
+    },
+    error: false,
+  });
 };
 
 exports.get = async (req, res) => {
   try {
     // if (!req.body.id) throw customError.dataInvalid;
     let modals = await Modal.find({});
+    return res.status(200).json({
+      error: false,
+      details: {
+        message: "Data Found Successfully",
+        data: modals,
+      },
+    });
+  } catch (error) {
+    console.log(`***** ERROR : ${req.originalUrl} ${error}`);
+    return res.status(error.code || 500).json({
+      error: true,
+      details: error,
+    });
+  }
+};
+
+exports.getOne = async (req, res) => {
+  try {
+    // if (!req.body.id) throw customError.dataInvalid;
+    let modals = await Modal.findOne({ name: req.params.name });
+    return res.status(200).json({
+      error: false,
+      details: {
+        message: "Data Found Successfully",
+        data: modals,
+      },
+    });
+  } catch (error) {
+    console.log(`***** ERROR : ${req.originalUrl} ${error}`);
+    return res.status(error.code || 500).json({
+      error: true,
+      details: error,
+    });
+  }
+};
+
+exports.getRecent = async (req, res) => {
+  try {
+    // if (!req.body.id) throw customError.dataInvalid;
+    let modals = await Modal.find({}).sort({ _id: -1 }).limit(5);
     return res.status(200).json({
       error: false,
       details: {

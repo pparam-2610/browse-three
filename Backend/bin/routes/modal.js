@@ -1,10 +1,11 @@
 const router = require("express").Router();
 const modalController = require("../controllers/modal");
-// const authConrtoller = require("../custom/authmiddleware");
+const modalMiddleware = require("../custom/modalMiddleware");
 
 // Add modal
 router.post(
-  "/add",
+  "/add/:name",
+  modalMiddleware.checkName,
   modalController.uploadImage.single("images"),
   modalController.add
 );
@@ -14,5 +15,9 @@ router.get(
   // modalController.uploadImage.single("images"),
   modalController.get
 );
+
+router.get("/get/:name", modalController.getOne);
+
+router.get("/getRecent", modalController.getRecent);
 
 module.exports = router;

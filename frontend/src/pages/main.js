@@ -1,37 +1,23 @@
 import React, { useState, useRef, useEffect, Suspense } from "react";
+
+// Styles
+import "../styles/main.css";
+
+// Componenets
 import { Canva } from "../components/modal";
-
-// // Styles
-// import "../styles/Main.scss";
-
-// // Icons
-// import { PhoneIcon, AddIcon, WarningIcon } from "@chakra-ui/icons";
-
-// // Assets
-// import Oc from "../assets/Oculus.png";
-
-// // Components
-// import ThreeContainer from "../components/ThreeDModel/ThreeContainer";
-// import DesktopNav from "../components/navigation/DesktopNav";
-// import MobileNav from "../components/navigation/MobileNav";
-// import Footer from "../components/Footer";
-// import CustomLoader from "../components/Customloader";
+import { Sidebar } from "../components/sidebar";
+import { Upload } from "../components/upload";
 
 const Main = () => {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className="main_wrapper">
-      Hi
-      <div className="main-container">
-        <div className="model-box">
-          {/* {loading && <CustomLoader />} */}
-          {/* <ThreeContainer loading={loading} setLoading={setLoading} /> */}
-          <Canva />
-        </div>
+    <>
+      <div className="main-content">
+        <Sidebar />
+        <Upload />
       </div>
-      {/* {window.innerWidth > 720 ? <Footer /> : <></>} */}
-    </div>
+    </>
   );
 };
 
