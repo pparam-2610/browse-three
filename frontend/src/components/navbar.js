@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 
 export function Navbar({ modalName }) {
   const history = useHistory();
-  console.log("The history is: ", history);
+  console.log("The history is in Navbar: ", history, modalName);
 
   return (
     <div className="top-navbar-div">
@@ -29,7 +29,14 @@ export function Navbar({ modalName }) {
       </div>
       <div className="nav-div-end">
         <div className="nav-div-upload-btn">
-          <Button variant="primary">Upload</Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              history.push("/");
+            }}
+          >
+            Upload
+          </Button>
         </div>
       </div>
     </div>

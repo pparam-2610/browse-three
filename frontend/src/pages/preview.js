@@ -1,10 +1,16 @@
 import React, { useState, useRef, useEffect, Suspense } from "react";
 import { Canva } from "../components/modal";
+import { useParams } from "react-router";
 
 import eventServices from "../services/eventServices";
+
+// Styles
+import "../styles/main.css";
+
 // Componenets
 import { Navbar } from "../components/navbar";
-import { useParams } from "react-router";
+import { Sidebar } from "../components/sidebar";
+import { Upload } from "../components/upload";
 
 const Preview = () => {
   const [loading, setLoading] = useState(true);
@@ -17,13 +23,13 @@ const Preview = () => {
     const data = await eventServices.getSingleModal(name);
     console.log("The data is: ", data);
     if (!data.data) {
-      console.log("SIngle");
+      console.log("Single");
       return;
     }
     console.log("data:", data);
 
     setPreviewModal(data.data);
-  }, []);
+  }, [name]);
 
   return (
     // <div className="main_wrapper">
@@ -41,7 +47,20 @@ const Preview = () => {
     //   </div>
     //   {/* {window.innerWidth > 720 ? <Footer /> : <></>} */}
     // </div>
-    <>{previewModal && <Canva modalData={previewModal} />}</>
+    <>
+      <div className="main-content">
+        <Sidebar />
+        {/* <Upload /> */}
+        <div className="right-preview-div">
+          <div className="right-preview-header">
+            <h1>{previewModal ? previewModal.name : "Please Wait"}</h1>
+          </div>
+          <div className="right-preview-content">
+            {previewModal && <Canva modalData={previewModal} />}
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

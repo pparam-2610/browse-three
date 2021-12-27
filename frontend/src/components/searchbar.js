@@ -35,7 +35,8 @@ export const SearchBar = ({ modalName, history }) => {
       })[0];
       //   props.searchName(newValues);
       console.log("The searched name is: ", newValues);
-      if (newValues) history.push(`/preview/${newValues}`);
+      // if (newValues) history.push(`/preview/${newValues}`);
+      if (newValues) window.location.href = `/preview/${newValues}`;
       setName("");
     }
   };

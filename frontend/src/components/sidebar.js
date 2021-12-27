@@ -27,13 +27,26 @@ export function Sidebar({}) {
 
   return (
     <div className="sidebar-div">
-      {modal.map((item) => {
-        return (
-          <Link to={`/preview/${item.name}`}>
-            <div className="">{item.name}</div>
-          </Link>
-        );
-      })}
+      <div className="sidebar-main-div">
+        {modal.map((item) => {
+          return (
+            <a
+              style={{
+                textDecoration: "none",
+                color: "white",
+                fontStyle: "italic",
+                fontSize: "1.5rem",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                window.location.href = `/preview/${item.name}`;
+              }}
+            >
+              <div className="sidebar-content-div">{item.name}</div>
+            </a>
+          );
+        })}
+      </div>
     </div>
   );
 }

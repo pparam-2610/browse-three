@@ -17,13 +17,19 @@ function App() {
     setModalName(modalData.data.map((item) => item.name));
   }, []);
 
+  const fetchModal = async () => {
+    const modalData = await eventServices.getModal();
+    setModal(modalData.data);
+    setModalName(modalData.data.map((item) => item.name));
+  };
+
   return (
     <div className="App">
       <Router>
         <Switch>
           <Route exact path="/">
             <Navbar modalName={modalName} />
-            <Main />
+            <Main fetchModal={fetchModal} />
           </Route>
           <Route exact path="/preview/:name">
             <Navbar modalName={modalName} />

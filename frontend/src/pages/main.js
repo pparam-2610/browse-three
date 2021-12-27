@@ -8,14 +8,14 @@ import { Canva } from "../components/modal";
 import { Sidebar } from "../components/sidebar";
 import { Upload } from "../components/upload";
 
-const Main = () => {
+const Main = ({ fetchModal }) => {
   const [loading, setLoading] = useState(true);
-
+  console.log("The function is: ", fetchModal);
   return (
     <>
       <div className="main-content">
         <Sidebar />
-        <Upload />
+        <Upload fetchModal={fetchModal} />
       </div>
     </>
   );

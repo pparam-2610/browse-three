@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import eventServices from "../services/eventServices";
 
-export function Upload({}) {
+export function Upload({ fetchModal }) {
   const history = useHistory();
   //   console.log("The history is: ", history);
 
@@ -25,6 +25,13 @@ export function Upload({}) {
   const [newModal, setNewModal] = useState(null);
 
   const submitForm = async () => {
+    console.log("File is: ", file);
+    const fileExtension = file.name.split(".").pop();
+    if (fileExtension != "glb") {
+      // console.log("Entenstion is: ", fileExtension);
+      setMessage("File type is not glb");
+      return;
+    }
     setLoad(true);
     const formData = new FormData();
 
@@ -37,6 +44,7 @@ export function Upload({}) {
     if (!data.error) {
       setNewModal(data.details.modal);
       setSuccess(true);
+      fetchModal();
     } else {
       setMessage(data.details?.message);
     }
@@ -57,7 +65,9 @@ export function Upload({}) {
           }}
         >
           <Form.Group className="mb-3">
-            <Form.Label>Name</Form.Label>
+            <Form.Label>
+              <span style={{ fontWeight: "bold" }}>NAME</span>
+            </Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter name"
@@ -67,12 +77,14 @@ export function Upload({}) {
               }}
               required
             />
-            <Form.Text className="text-muted">
-              Enter a name for the modal, it must be unique.
-            </Form.Text>
+            {/* <Form.Text className="text-muted"> */}
+            Enter a name for the modal, it must be unique.
+            {/* </Form.Text> */}
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>File</Form.Label>
+            <Form.Label>
+              <span style={{ fontWeight: "bold" }}>FILE</span>
+            </Form.Label>
             <Form.Control
               type="file"
               placeholder="Select file"
@@ -80,11 +92,12 @@ export function Upload({}) {
                 console.log("The file is: ", e.target.files[0]);
                 setFile(e.target.files[0]);
               }}
+              accept=".glb"
               required
             />
-            <Form.Text className="text-muted">
-              Select only a .glb file
-            </Form.Text>
+            {/* <Form.Text className="" color={"white"}> */}
+            Select only a .glb file
+            {/* </Form.Text> */}
           </Form.Group>
 
           {/* <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -113,7 +126,7 @@ export function Upload({}) {
 
             {success ? (
               <Button
-                variant="success"
+                variant="secondary"
                 type="button"
                 className="m-2"
                 onClick={() => {
@@ -124,10 +137,14 @@ export function Upload({}) {
               </Button>
             ) : (
               <Button
-                variant="success"
+                variant="secondary"
                 type="button"
                 className="m-2"
-                style={{ opacity: 0.5 }}
+                style={{
+                  opacity: 0.5,
+                  // backgroundColor: "lightgreen",
+                  // border: "1px solid lighgreen",
+                }}
                 disabled
               >
                 Preview
@@ -135,7 +152,7 @@ export function Upload({}) {
             )}
           </div>
         </Form>
-        <span style={{ color: success ? "green" : "red" }}>{message}</span>
+        <span style={{ color: success ? "green" : "orange" }}>{message}</span>
       </div>
     </div>
   );
