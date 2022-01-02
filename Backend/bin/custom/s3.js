@@ -11,20 +11,19 @@ const uniqid = require("uniqid");
 // });
 
 AWS.config.update({
-  accessKeyId: "AKIATNIICP3PJYT2KUAP",
-  secretAccessKey: "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",
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
 });
 const s3 = new AWS.S3({
   // accessKeyId: "AKIATNIICP3PJYT2KUA" || process.env.AWS_ID,
   // secretAccessKey:
   //   "KfW5rFwBMKIGrmlCDpw1ARRhJiuQHfnRnfAwOhyb" || process.env.AWS_SECRET,
   // region: "ap-south-1" || process.env.AWS_S3_REGION,
-  accessKeyId: "AKIATNIICP3PJYT2KUAP",
-  secretAccessKey: "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",
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
   region: "ap-south-1",
   // signatureVersion: "v4",
 });
-// console.log(s3);
 const uploadFile = async (fileName, name) => {
   return new Promise((resolve, reject) => {
     // Read content from the file

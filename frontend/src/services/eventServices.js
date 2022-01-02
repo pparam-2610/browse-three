@@ -1,6 +1,6 @@
 import axios from "axios";
-// const domain = "http://13.232.38.48:8000";
-const domain = "http://localhost:8000";
+const domain = "http://13.233.165.192:8000";
+// const domain = "http://localhost:8000";
 
 async function getModal() {
   try {
